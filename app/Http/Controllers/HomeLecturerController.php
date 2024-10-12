@@ -17,9 +17,9 @@ class HomeLecturerController extends Controller
                     "id" => $student->id,
                     "name" => $student->user->name,
                     "username" => $student->user->username,
-                    "class" => $student->class,
-                    "study_program" => $student->study_program,
-                    "major" => $student->major,
+                    "class" => $student->studyProgram->study_program_initials,
+                    "study_program" => $student->studyProgram->name,
+                    "major" => $student->studyProgram->major,
                     "academic_year" => $student->academic_year,
                 ];
             }),

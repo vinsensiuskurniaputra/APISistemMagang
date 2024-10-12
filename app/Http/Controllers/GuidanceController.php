@@ -30,6 +30,7 @@ class GuidanceController extends Controller
             'title' => ['required'],
             'date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'activity' => ['required'],
+            'name_file' => ['nullable', 'file', 'max:2048', 'mimes:pdf'],
         ]);
 
         if($validator->fails()){
@@ -40,14 +41,20 @@ class GuidanceController extends Controller
             ],400);
         }
 
-        Guidance::create([
+        $data = [
             "student_id" => $request->user()->student->id,
             "lecturer_id" => $request->user()->student->lecturer_id,
             "title" => $request->title,
             "activity" => $request->activity,
             "date" => $request->date,
             "status" => 'in-progress',
-        ]);
+        ];
+
+        if($request->hasFile('name_file')){
+            $data['name_file'] = $request->file('name_file')->store('guidance_file', 'public');
+        }
+
+        Guidance::create($data);
 
         return response()->json([
             "code" => "200",

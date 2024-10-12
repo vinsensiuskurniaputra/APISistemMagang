@@ -3,13 +3,17 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Score;
+use App\Models\User;
 use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Guidance;
 use App\Models\Industry;
 use App\Models\Lecturer;
+use App\Models\Internship;
+use App\Models\StudyProgram;
 use Illuminate\Database\Seeder;
+use App\Models\AssessmentComponent;
+use App\Models\DetailedAssessmentComponent;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,13 +24,23 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\Student::factory()->count(10)->create();
 
+        AssessmentComponent::factory(2)->create()->each(function ($component) {
+            DetailedAssessmentComponent::factory(3)->create([
+                'assessment_components_id' => $component->id,
+            ]);
+        });
+
 
         $lecturers = Lecturer::factory()->count(5)->create();
-
-        $students = Student::factory()->count(10)->create(function () use ($lecturers){
+        
+        $studyPrograms = StudyProgram::factory()->count(5)->create();
+        
+        $students = Student::factory()->count(10)->create(function () use ($lecturers, $studyPrograms){
             $lecturer = $lecturers->random();
+            $studyProgram = $studyPrograms->random();
             return [
                 'lecturer_id' => $lecturer->id,
+                'study_program_id' => $studyProgram->id,
             ];
         });
 
@@ -45,19 +59,17 @@ class DatabaseSeeder extends Seeder
             ];
         });
 
-        Score::factory()->count(30)->create(function () use ($students){
+        $industries = Industry::factory(10)->create();
+
+        Internship::factory()->count(20)->create(function () use ($students, $industries){
             $student = $students->random();
+            $industry = $industries->random();
             return [
                 'student_id' => $student->id,
+                'industry_id' => $industry->id,
             ];
         });
 
-        Industry::factory()->count(20)->create(function () use ($students){
-            $student = $students->random();
-            return [
-                'student_id' => $student->id,
-            ];
-        });
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

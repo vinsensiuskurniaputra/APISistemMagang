@@ -21,8 +21,11 @@ class DetailStudentController extends Controller
             "username" => $student->user->username,
             "email" => $student->user->email,
         ];
+
         $data = [
             "student" => $dataStudent,
+            "internships" => $student->internships,
+            "assessments" => $student->assessments,
             "guidances" => $student->guidances()->latest()->get(),
             "log_book" => $student->logBooks()->latest()->get()
         ];

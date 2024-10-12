@@ -21,10 +21,9 @@ class IndustryFactory extends Factory
         $endDate = $this->faker->optional()->dateTimeBetween($startDate, '+1 year');
 
         return [
-            'student_id' => Student::factory(), 
-            'name' => $this->faker->company(), 
-            'start_date' => $startDate->format('Y-m-d'),
-            'end_date' => $endDate ? $endDate->format('Y-m-d') : null,
+            'name' => $this->faker->company(),
+            'address' => $this->faker->address(),
+            'city' => $this->faker->city(),
             'created_at' => now(),
             'updated_at' => now(),
         ];

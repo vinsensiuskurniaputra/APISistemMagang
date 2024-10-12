@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Lecturer;
+use App\Models\StudyProgram;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -44,14 +45,10 @@ class StudentFactory extends Factory
         $academic_year = ['2023/2024', '2024/2025', '2025/2026'];
         
         return [
-            'user_id' => User::factory([
-                'role' => 'Student'
-            ]), 
-            'lecturer_id' => Lecturer::factory(), 
-            'class' => $this->faker->randomElement(['A1', 'B2', 'C3', 'D4', 'E5']),
-            'study_program' => $this->faker->randomElement($studyPrograms),
-            'major' => $this->faker->randomElement($majors),
-            'academic_year' => $this->faker->randomElement($academic_year),
+            'user_id' => User::factory()->create(['role' => 'Student'])->id,
+            'lecturer_id' => Lecturer::factory(),
+            'study_program_id' => StudyProgram::factory(),
+            'academic_year' => $this->faker->year,
             'created_at' => now(),
             'updated_at' => now(),
         ];

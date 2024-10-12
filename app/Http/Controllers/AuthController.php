@@ -6,6 +6,7 @@ use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -42,5 +43,53 @@ class AuthController extends Controller
                 "message" => "Username or Password Wrong"
             ]
         ],401);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'code' => '200',
+            'status' => 'success',
+            'message' => 'Logged out successfully.'
+        ], 200);
+    }
+
+    public function resetPassword(Request $request){
+        $validator = Validator::make( $request->all(),[
+            'password' => ['required'],
+            'new_password' => ['required'],
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                "code" => "400",
+                "status" => "BAD_REQUEST",
+                "errors" => $credentials->errors()
+            ],400);
+        }
+
+        $user = $request->user();
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                "code" => "401",
+                "status" => "UNAUTHORIZED",
+                "errors" => [
+                    "message" => "Password is incorrect."
+                ]
+            ], 401);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'code' => '200',
+            'status' => 'success',
+            'message' => 'Password reset successfully.'
+        ], 200);
     }
 }

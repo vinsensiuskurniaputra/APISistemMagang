@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Student;
+use App\Models\Industry;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Score>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Internship>
  */
-class ScoreFactory extends Factory
+class InternshipFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +18,12 @@ class ScoreFactory extends Factory
      */
     public function definition(): array
     {
+        $startDate = $this->faker->date();
         return [
             'student_id' => Student::factory(),
-            'lecturer_score' => $this->faker->numberBetween(50, 100),
-            'industy_score' => $this->faker->numberBetween(50, 100), 
+            'industry_id' => Industry::factory(),
+            'start_date' => $startDate,
+            'end_date' => $this->faker->optional()->dateTimeBetween($startDate, '+6 months'),
             'created_at' => now(),
             'updated_at' => now(),
         ];

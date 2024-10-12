@@ -14,7 +14,7 @@ class ProfileStudentController extends Controller
             "name" => $request->user()->name,
             "username" => $request->user()->username,
             "email" => $request->user()->email,
-            "industry" => $request->user()->student->industries,
+            "internship" => $request->user()->student->internship,
         ];
 
         return response()->json([
