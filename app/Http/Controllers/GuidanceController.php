@@ -92,11 +92,17 @@ class GuidanceController extends Controller
             ],400);
         }
 
-        $guidance->update([
+        $data = [
             'title' => $request->title,
             'date' => $request->date,
             'activity' => $request->activity,
-        ]);
+        ];
+
+        if($guidance->status == "rejected"){
+            $data['status'] = "updated";
+        }
+
+        $guidance->update($data);
 
         return response()->json([
             "code" => "200",
