@@ -24,7 +24,15 @@ class DetailStudentController extends Controller
 
         $data = [
             "student" => $dataStudent,
-            "internships" => $student->internships,
+            "internships" => $student->internships->map(function($internship){
+                return [
+                    "name" => $internship->industry->name,
+                    "address" => $internship->industry->address,
+                    "city" => $internship->industry->city,
+                    "start_date" => $internship->start_date,
+                    "end_date" => $internship->end_date,
+                ];
+            }),
             "assessments" => $student->assessments,
             "guidances" => $student->guidances()->latest()->get(),
             "log_book" => $student->logBooks()->latest()->get()
