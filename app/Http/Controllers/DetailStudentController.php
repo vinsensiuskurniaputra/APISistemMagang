@@ -83,9 +83,10 @@ class DetailStudentController extends Controller
 
         $data = [
             'status' => $request->status,
+            'updated_at' => now(),
         ];
 
-        if($request->status == $statuses[1] && $request->lecturer_note != null){
+        if($request->lecturer_note != null){
             $data['lecturer_note'] = $request->lecturer_note;
         }
 

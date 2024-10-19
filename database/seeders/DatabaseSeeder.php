@@ -56,6 +56,7 @@ class DatabaseSeeder extends Seeder
             return [
                 'student_id' => $student->id,
                 'lecturer_id' => $student->lecturer_id,
+                'lecturer_note' => null,
             ];
         });
 
