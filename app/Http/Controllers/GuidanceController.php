@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\Guidance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class GuidanceController extends Controller
 {
@@ -13,14 +14,25 @@ class GuidanceController extends Controller
      */
     public function index(Request $request)
     {
-        $data = [
-            "guidances" => $request->user()->student->guidances()->latest()->get()
-        ];
+        $guidances = $request->user()->student->guidances()->latest()->get()->map(function ($guidance) {
+            return [
+                'id' => $guidance->id,
+                'title' => $guidance->title,
+                'activity' => $guidance->activity,
+                'date' => $guidance->date,
+                'lecturer_note' => $guidance->lecturer_note,
+                'status' => $guidance->status,
+                'name_file' => $guidance->name_file != null ? asset('storage/' . $guidance->name_file) : null,
+            ];
+        });
+
 
         return response()->json([
             "code" => "200",
             "status" => "OK",
-            "data" => $data
+            "data" => [
+                "guidances" => $guidances
+            ],
         ],200);
     }
 
@@ -118,6 +130,10 @@ class GuidanceController extends Controller
      */
     public function destroy(Guidance $guidance)
     {
+        if ($guidance->name_file) {
+            Storage::disk('public')->delete($guidance->name_file);
+        }
+
         $guidance->delete();
 
         return response()->json([

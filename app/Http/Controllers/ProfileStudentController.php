@@ -14,8 +14,16 @@ class ProfileStudentController extends Controller
             "name" => $request->user()->name,
             "username" => $request->user()->username,
             "email" => $request->user()->email,
-            "photo_profile" => $request->user()->photo_profile,
-            "internship" => $request->user()->student->internship,
+            "photo_profile" => $request->user()->photo_profile ? $data["photo_profile"] = asset('storage/' . $request->user()->photo_profile) : null,
+            "internships" => $request->user()->student->internships->map(function($internship){
+                return [
+                    "name" => $internship->industry->name,
+                    "address" => $internship->industry->address,
+                    "city" => $internship->industry->city,
+                    "start_date" => $internship->start_date,
+                    "end_date" => $internship->end_date,
+                ];
+            }),
         ];
 
         return response()->json([

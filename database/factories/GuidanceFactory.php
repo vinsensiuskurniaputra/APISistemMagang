@@ -27,7 +27,7 @@ class GuidanceFactory extends Factory
             'activity' => $this->faker->sentence(10, true),
             'date' => $this->faker->date,
             'lecturer_note' => $this->faker->paragraph(3, true),
-            'name_file' => $this->faker->unique()->lexify('document_????.pdf'), 
+            'name_file' => null, 
             'status' => $this->faker->randomElement($statuses),
             'created_at' => now(),
             'updated_at' => now(),
