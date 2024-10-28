@@ -38,7 +38,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make( $request->all(),[
-            'photo_profile' => ['nullable', 'file', 'max:2048', 'image'],
+            'photo_profile' => ['required', 'file', 'max:2048', 'image'],
         ]);
 
         if($validator->fails()){
@@ -51,7 +51,7 @@ class UserController extends Controller
 
         $user = $request->user();
 
-        $date = [];
+        $data = [];
 
         if($request->hasFile('photo_profile')){
             $data['photo_profile'] = $request->file('photo_profile')->store('photos_profile', 'public');
