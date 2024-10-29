@@ -6,6 +6,7 @@ use Validator;
 use App\Models\Student;
 use App\Models\Assessment;
 use Illuminate\Http\Request;
+use App\Models\AssessmentComponent;
 use App\Http\Controllers\Controller;
 
 class AssessmentController extends Controller
@@ -84,5 +85,27 @@ class AssessmentController extends Controller
     public function destroy(Assessment $assessment)
     {
         //
+    }
+
+    public function getAssessmentComponentAndDetailAssessmentComponent()
+    {
+        $data = [
+            "assessment_components" => AssessmentComponent::all()->map(function($assessmentComponent){
+                return [
+                    "name" => $assessmentComponent->name,
+                    "detailAssessment" => $assessmentComponent->detailedAssessmentComponents->map(function ($detail) {
+                        return [
+                            "id" => $detail->id,
+                            "information" => $detail->information,
+                        ];
+                    }),
+                ];
+            }),
+        ];
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => $data,
+        ],200);
     }
 }

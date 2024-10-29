@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
         AssessmentComponent::factory(2)->create()->each(function ($component) {
             DetailedAssessmentComponent::factory(3)->create([
-                'assessment_components_id' => $component->id,
+                'assessment_component_id' => $component->id,
             ]);
         });
 

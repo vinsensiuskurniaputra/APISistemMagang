@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id');
-            $table->foreignId('detailed_assessment_components_id');
+            $table->foreignId('detailed_assessment_component_id');
             $table->integer('score');
             $table->timestamps();
         });

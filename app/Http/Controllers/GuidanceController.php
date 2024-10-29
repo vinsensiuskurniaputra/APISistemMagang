@@ -94,6 +94,7 @@ class GuidanceController extends Controller
             'title' => ['required'],
             'date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'activity' => ['required'],
+            'name_file' => ['nullable', 'file', 'max:2048', 'mimes:pdf'],
         ]);
 
         if($validator->fails()){
@@ -109,6 +110,10 @@ class GuidanceController extends Controller
             'date' => $request->date,
             'activity' => $request->activity,
         ];
+
+        if($request->hasFile('name_file')){
+            $data['name_file'] = $request->file('name_file')->store('guidance_file', 'public');
+        }
 
         if($guidance->status == "rejected"){
             $data['status'] = "updated";

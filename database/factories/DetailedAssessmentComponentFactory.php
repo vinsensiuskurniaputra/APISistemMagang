@@ -18,7 +18,7 @@ class DetailedAssessmentComponentFactory extends Factory
     public function definition(): array
     {
         return [
-            'assessment_components_id' => AssessmentComponent::factory(),
+            'assessment_component_id' => AssessmentComponent::factory(),
             'information' => $this->faker->sentence(8, true),
             'created_at' => now(),
             'updated_at' => now(),

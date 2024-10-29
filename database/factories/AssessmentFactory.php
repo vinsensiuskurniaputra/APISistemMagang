@@ -18,7 +18,7 @@ class AssessmentFactory extends Factory
     {
         return [
             'student_id' => Student::factory(),
-            'detailed_assessment_components_id' => DetailedAssessmentComponent::factory(),
+            'detailed_assessment_component_id' => DetailedAssessmentComponent::factory(),
             'score' => $this->faker->numberBetween(50, 100),
             'created_at' => now(),
             'updated_at' => now(),

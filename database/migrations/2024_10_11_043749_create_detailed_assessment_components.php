@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('detailed_assessment_components', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assessment_components_id');
+            $table->foreignId('assessment_component_id');
             $table->string('information');
             $table->timestamps();
         });
