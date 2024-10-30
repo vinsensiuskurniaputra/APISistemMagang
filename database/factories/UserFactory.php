@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'password' => Hash::make('polines*2023'),
             'role' => $this->faker->randomElement(['Lecturer', 'Student']), 
-            'photo_profile' => $this->faker->optional()->imageUrl(200, 200, 'people'),
+            'photo_profile' => null,
             'remember_token' => Str::random(10),
         ];
     }

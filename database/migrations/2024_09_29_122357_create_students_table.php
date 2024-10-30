@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('lecturer_id');
             $table->foreignId('study_program_id');
+            $table->string('class');
             $table->string('academic_year');
             $table->timestamps();
         });

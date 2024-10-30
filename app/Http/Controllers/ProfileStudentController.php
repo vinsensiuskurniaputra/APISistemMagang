@@ -15,7 +15,7 @@ class ProfileStudentController extends Controller
             "username" => $request->user()->username,
             "email" => $request->user()->email,
             "photo_profile" => $request->user()->photo_profile ? $data["photo_profile"] = asset('storage/' . $request->user()->photo_profile) : null,
-            "internships" => $request->user()->student->internships->map(function($internship){
+            "internships" =>  $request->user()->student->internships->isNotEmpty() != 0 ?  $request->user()->student->internships->map(function($internship){
                 return [
                     "name" => $internship->industry->name,
                     "address" => $internship->industry->address,
@@ -23,7 +23,7 @@ class ProfileStudentController extends Controller
                     "start_date" => $internship->start_date,
                     "end_date" => $internship->end_date,
                 ];
-            }),
+            }) : null,
         ];
 
         return response()->json([

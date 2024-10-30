@@ -20,35 +20,17 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         
-        $studyPrograms = [
-            'Teknik Informatika',
-            'Teknik Sipil',
-            'Manajemen',
-            'Ekonomi',
-            'Psikologi',
-            'Sistem Informasi',
-            'Desain Komunikasi Visual',
-            'Ilmu Komunikasi',
-        ];
-
-        $majors = [
-            'Software Engineering',
-            'Structural Engineering',
-            'Marketing Management',
-            'Business Economics',
-            'Clinical Psychology',
-            'Information Systems',
-            'Graphic Design',
-            'Public Relations',
-        ];
         
-        $academic_year = ['2023/2024', '2024/2025', '2025/2026'];
+        
+        $academic_years = ['2023/2024', '2024/2025', '2025/2026'];
+        $class = ['3A', '3B', '3C', '2C'];
         
         return [
             'user_id' => User::factory()->create(['role' => 'Student'])->id,
             'lecturer_id' => Lecturer::factory(),
             'study_program_id' => StudyProgram::factory(),
-            'academic_year' => $this->faker->year,
+            'class' => $this->faker->randomElement($class),
+            'academic_year' => $this->faker->randomElement($academic_years),
             'created_at' => now(),
             'updated_at' => now(),
         ];
