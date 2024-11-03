@@ -10,6 +10,7 @@ use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\InternshipController;
 use App\Http\Controllers\HomeStudentController;
 use App\Http\Controllers\HomeLecturerController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DetailStudentController;
 use App\Http\Controllers\ProfileStudentController;
 use App\Http\Controllers\ProfileLecturerController;
@@ -29,11 +30,12 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
 Route::middleware(['auth:sanctum'])->prefix('/student')->group(function () {
     Route::get('/home', [HomeStudentController::class, 'index']);
-
+    Route::get('/notification', [NotificationController::class, 'index']);
+    
     Route::resource('/guidance', GuidanceController::class);
     // Route::post('/guidance', [GuidanceController::class, 'store']);
     // Route::put('/guidance/{guidance}', [GuidanceController::class, 'update']);
-
+    
     Route::resource('/logBook', LogBookController::class);
     
     Route::get('/profile', [ProfileStudentController::class, 'index']);
@@ -43,13 +45,14 @@ Route::middleware(['auth:sanctum'])->prefix('/student')->group(function () {
 
 Route::middleware(['auth:sanctum'])->prefix('/lecturer')->group(function () {
     Route::get('/home', [HomeLecturerController::class, 'index']);
-
+    
     Route::get('/detailStudent/{student}', [DetailStudentController::class, 'index']);
     Route::post('/addAssessment/{student}', [AssessmentController::class, 'store']);
     Route::get('/assessmentComponents', [AssessmentController::class, 'getAssessmentComponentAndDetailAssessmentComponent']);
-
+    
     Route::put('/guidance/{guidance}', [DetailStudentController::class, 'update']);
     
+    Route::post('/notification', [NotificationController::class, 'store']);
     Route::get('/profile', [ProfileLecturerController::class, 'index']);
     
 });

@@ -10,6 +10,7 @@ use App\Models\Guidance;
 use App\Models\Industry;
 use App\Models\Lecturer;
 use App\Models\Internship;
+use App\Models\Notification;
 use App\Models\StudyProgram;
 use Illuminate\Database\Seeder;
 use App\Models\AssessmentComponent;
@@ -43,6 +44,10 @@ class DatabaseSeeder extends Seeder
                 'study_program_id' => $studyProgram->id,
             ];
         });
+
+        Notification::factory()->count(5)->create([
+            'student_id' => $students->random()->id,
+        ]);
 
         LogBook::factory()->count(50)->create(function () use ($students){
             $student = $students->random();

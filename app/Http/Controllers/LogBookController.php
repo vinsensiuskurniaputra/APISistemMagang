@@ -15,7 +15,7 @@ class LogBookController extends Controller
     public function index(Request $request)
     {
         $data = [
-            "log_books" => $request->user()->student->logBooks()->latest()->get()
+            "log_books" => $request->user()->student->logBooks()->latest('updated_at')->get()
         ];
 
         return response()->json([
@@ -49,6 +49,8 @@ class LogBookController extends Controller
             "title" => $request->title,
             "activity" => $request->activity,
             "date" => $request->date,
+            "created_at" => now(),
+            "updated_at" => now(),
         ]);
 
         return response()->json([
@@ -91,6 +93,7 @@ class LogBookController extends Controller
             'title' => $request->title,
             'date' => $request->date,
             'activity' => $request->activity,
+            "updated_at" => now(),
         ]);
 
         return response()->json([

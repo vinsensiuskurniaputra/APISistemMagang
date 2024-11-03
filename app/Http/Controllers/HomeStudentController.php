@@ -13,7 +13,7 @@ class HomeStudentController extends Controller
         $data = [
             "name" => $request->user()->name,
             "seminar" => null,
-            "latest_guidances" => $request->user()->student->guidances()->latest()->take(2)->get()->map(function ($guidance) {
+            "latest_guidances" => $request->user()->student->guidances()->latest('updated_at')->take(2)->get()->map(function ($guidance) {
                 return [
                     'id' => $guidance->id,
                     'title' => $guidance->title,
@@ -24,7 +24,7 @@ class HomeStudentController extends Controller
                     'name_file' => $guidance->name_file != null ? asset('storage/' . $guidance->name_file) : null,
                 ];
             }),
-            "latest_log_books" => $request->user()->student->logBooks()->latest()->take(2)->get()
+            "latest_log_books" => $request->user()->student->logBooks()->latest('updated_at')->take(2)->get()
         ];
 
         return response()->json([

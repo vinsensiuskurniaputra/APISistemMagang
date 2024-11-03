@@ -14,7 +14,7 @@ class GuidanceController extends Controller
      */
     public function index(Request $request)
     {
-        $guidances = $request->user()->student->guidances()->latest()->get()->map(function ($guidance) {
+        $guidances = $request->user()->student->guidances()->latest('updated_at')->get()->map(function ($guidance) {
             return [
                 'id' => $guidance->id,
                 'title' => $guidance->title,
@@ -60,6 +60,8 @@ class GuidanceController extends Controller
             "activity" => $request->activity,
             "date" => $request->date,
             "status" => 'in-progress',
+            "created_at" => now(),
+            "updated_at" => now(),
         ];
 
         if($request->hasFile('name_file')){
@@ -109,6 +111,7 @@ class GuidanceController extends Controller
             'title' => $request->title,
             'date' => $request->date,
             'activity' => $request->activity,
+            "updated_at" => now(),
         ];
 
         if($request->hasFile('name_file')){

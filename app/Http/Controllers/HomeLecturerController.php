@@ -21,6 +21,11 @@ class HomeLecturerController extends Controller
                     "study_program" => $student->studyProgram->name,
                     "major" => $student->studyProgram->major,
                     "academic_year" => $student->academic_year,
+                    "activities" => [
+                        "is_in_progress" => $student->guidances->contains('status', 'in-progress'),
+                        "is_updated" => $student->guidances->contains('status', 'updated'),
+                        "is_rejected" => $student->guidances->contains('status', 'rejected'),
+                    ],
                 ];
             }),
         ];

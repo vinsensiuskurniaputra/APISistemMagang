@@ -9,6 +9,7 @@ use App\Models\Industry;
 use App\Models\Lecturer;
 use App\Models\Assessment;
 use App\Models\Internship;
+use App\Models\Notification;
 use App\Models\StudyProgram;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,5 +49,9 @@ class Student extends Model
 
     public function assessments(){
         return $this->hasMany(Assessment::class);
+    }
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
 }
