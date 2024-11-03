@@ -47,6 +47,9 @@ Route::middleware(['auth:sanctum'])->prefix('/lecturer')->group(function () {
     Route::get('/home', [HomeLecturerController::class, 'index']);
     
     Route::get('/detailStudent/{student}', [DetailStudentController::class, 'index']);
+
+    Route::put('/finishedStudent/{student}', [DetailStudentController::class, 'updateFinishedStudent']);
+
     Route::post('/addAssessment/{student}', [AssessmentController::class, 'store']);
     Route::get('/assessmentComponents', [AssessmentController::class, 'getAssessmentComponentAndDetailAssessmentComponent']);
     

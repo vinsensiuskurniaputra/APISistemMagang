@@ -31,6 +31,7 @@ class StudentFactory extends Factory
             'study_program_id' => StudyProgram::factory(),
             'class' => $this->faker->randomElement($class),
             'academic_year' => $this->faker->randomElement($academic_years),
+            'is_finished' => false,
             'created_at' => now(),
             'updated_at' => now(),
         ];

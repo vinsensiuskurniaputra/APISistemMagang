@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('study_program_id');
             $table->string('class');
             $table->string('academic_year');
+            $table->boolean('is_finished');
             $table->timestamps();
         });
     }

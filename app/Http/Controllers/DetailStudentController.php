@@ -20,6 +20,7 @@ class DetailStudentController extends Controller
             "name" => $student->user->name,
             "username" => $student->user->username,
             "email" => $student->user->email,
+            "is_finished" => $student->is_finished,
         ];
 
         $data = [
@@ -35,7 +36,7 @@ class DetailStudentController extends Controller
             }),
             "assessments" => $student->assessments,
             "guidances" => $student->guidances()->latest()->get(),
-            "log_book" => $student->logBooks()->latest()->get()
+            "log_book" => $student->logBooks()->latest()->get(),
         ];
 
 
@@ -102,6 +103,36 @@ class DetailStudentController extends Controller
 
     }
 
+    public function updateFinishedStudent(Request $request, Student $student)
+    {
+        $validator = Validator::make( $request->all(),[
+            'is_finished' => ['required', 'boolean'],
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                "code" => "400",
+                "status" => "BAD_REQUEST",
+                "errors" => $validator->errors()
+            ],400);
+        }
+
+        $data = [
+            'is_finished' => $request->is_finished,
+        ];
+
+        $student->update($data);
+
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => [
+                "message" => "Success"
+            ]
+        ],200);
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -109,4 +140,5 @@ class DetailStudentController extends Controller
     {
         //
     }
+
 }
