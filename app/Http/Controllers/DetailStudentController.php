@@ -20,6 +20,8 @@ class DetailStudentController extends Controller
             "name" => $student->user->name,
             "username" => $student->user->username,
             "email" => $student->user->email,
+            "major" => $student->studyProgram->major,
+            "class" => "{$student->studyProgram->study_program_initials} - {$student->class}",
             "is_finished" => $student->is_finished,
         ];
 

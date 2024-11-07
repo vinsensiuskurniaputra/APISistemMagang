@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'student_id' => Student::factory(),
+            'user_id' => User::factory(),
             'message' => $this->faker->sentence(),
             'date' => $this->faker->date(),
             'category' => $this->faker->randomElement(['info', 'warning', 'alert']),

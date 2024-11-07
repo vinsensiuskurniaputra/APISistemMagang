@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         });
 
         Notification::factory()->count(5)->create([
-            'student_id' => $students->random()->id,
+            'user_id' => $students->random()->user_id,
         ]);
 
         LogBook::factory()->count(50)->create(function () use ($students){
