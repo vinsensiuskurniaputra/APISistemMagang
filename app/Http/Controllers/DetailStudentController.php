@@ -19,6 +19,7 @@ class DetailStudentController extends Controller
         $dataStudent = [
             "name" => $student->user->name,
             "username" => $student->user->username,
+            "photo_profile" => $student->user->photo_profile ? asset('storage/'.$student->user->photo_profile ) : null,
             "email" => $student->user->email,
             "major" => $student->studyProgram->major,
             "class" => "{$student->studyProgram->study_program_initials} - {$student->class}",

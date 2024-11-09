@@ -22,7 +22,7 @@ class NotificationFactory extends Factory
             'user_id' => User::factory(),
             'message' => $this->faker->sentence(),
             'date' => $this->faker->date(),
-            'category' => $this->faker->randomElement(['info', 'warning', 'alert']),
+            'category' => $this->faker->randomElement(['guidance', 'log_book', 'general', 'revisi']),
             'is_read' => $this->faker->boolean(),
             'detail_text' => $this->faker->paragraph(),
             'created_at' => now(),

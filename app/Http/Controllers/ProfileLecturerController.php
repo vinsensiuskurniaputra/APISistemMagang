@@ -11,6 +11,7 @@ class ProfileLecturerController extends Controller
             "name" => $request->user()->name,
             "username" => $request->user()->username,
             "email" => $request->user()->email,
+            "photo_profile" => $request->user()->photo_profile ? asset('storage/' . $request->user()->photo_profile) : null,
         ];
 
         return response()->json([
