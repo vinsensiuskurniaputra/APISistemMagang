@@ -17,6 +17,7 @@ class HomeLecturerController extends Controller
                     "id" => $student->id,
                     "name" => $student->user->name,
                     "username" => $student->user->username,
+                    "photo_profile" => $student->user->photo_profile ? asset('storage/'.$student->user->photo_profile ) : null,
                     "class" => "{$student->studyProgram->study_program_initials} - {$student->class}",
                     "study_program" => $student->studyProgram->name,
                     "major" => $student->studyProgram->major,
