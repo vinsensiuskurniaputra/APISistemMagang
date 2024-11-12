@@ -10,7 +10,7 @@ class NotificationController extends Controller
 {
     public function index(Request $request){
         $data = [
-            "notifications" => $request->user()->student->notifications()->latest()->get(),
+            "notifications" => $request->user()->notifications()->latest()->get(),
         ];
 
         return response()->json([

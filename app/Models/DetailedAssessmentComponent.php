@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\AssessmentComponent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DetailedAssessmentComponent extends Model
 {
@@ -13,5 +14,9 @@ class DetailedAssessmentComponent extends Model
         'id',
     ];
 
+    public function assessmentComponent()
+    {
+        return $this->belongsTo(AssessmentComponent::class);
+    }
     
 }
