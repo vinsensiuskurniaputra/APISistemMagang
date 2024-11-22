@@ -60,4 +60,39 @@ class NotificationController extends Controller
         ], 200);
     }
 
+    public function markAsRead(Request $request)
+    {
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'ids' => ['required', 'array'], // Validasi bahwa `ids` adalah array
+            'ids.*' => ['required', 'exists:notifications,id'], // Setiap id harus ada di tabel `notifications`
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                "code" => "400",
+                "status" => "BAD_REQUEST",
+                "errors" => $validator->errors()
+            ], 400);
+        }
+
+        // Update notifikasi dengan id yang dikirim
+        $updatedCount = Notification::whereIn('id', $request->ids)
+            ->update([
+                'is_read' => true,
+                'updated_at' => now(),
+            ]);
+
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => [
+                "message" => "Notifications updated successfully",
+                "updated_count" => $updatedCount,
+            ]
+        ], 200);
+    }
+
+
+
 }
