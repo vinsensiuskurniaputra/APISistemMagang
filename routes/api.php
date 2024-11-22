@@ -65,6 +65,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/updateProfile', [UserController::class, 'update']);
 
+    Route::put('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
+    
     Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 });
 
