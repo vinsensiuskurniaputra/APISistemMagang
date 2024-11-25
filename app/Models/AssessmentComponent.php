@@ -14,7 +14,7 @@ class AssessmentComponent extends Model
         'id',
     ];
 
-    function detailedAssessmentComponents(){
+    function detailedComponents(){
         return $this->hasMany(DetailedAssessmentComponent::class);
     }
 }

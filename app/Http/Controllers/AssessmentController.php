@@ -125,15 +125,15 @@ class AssessmentController extends Controller
 
         // Ambil semua nilai yang sudah dimiliki siswa
         $existingAssessments = Assessment::where('student_id', $student->id)
-            ->pluck('score', 'detailed_assessment_components_id');
+            ->pluck('score', 'detailed_assessment_component_id');
 
         // Map data komponen penilaian beserta sub komponen dan nilai
         $result = $components->map(function ($component) use ($existingAssessments) {
             $scores = $component->detailedComponents->map(function ($detailedComponent) use ($existingAssessments) {
                 return [
                     'id' => $detailedComponent->id,
-                    'name' => $detailedComponent->name,
-                    'score' => $existingAssessments->get($detailedComponent->id, 0) // Nilai default 0 jika belum ada
+                    'name' => $detailedComponent->information,
+                    'score' => $existingAssessments->get($detailedComponent->id, null) // Nilai default 0 jika belum ada
                 ];
             });
 
