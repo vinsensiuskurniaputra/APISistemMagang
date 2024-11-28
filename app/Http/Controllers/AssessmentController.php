@@ -38,28 +38,28 @@ class AssessmentController extends Controller
             ], 400);
         }
 
-        $assessments = [];
         foreach ($request->scores as $scoreData) {
-            // Cek apakah nilai untuk komponen ini sudah ada
-            if (Assessment::where([
+            $existingAssessment = Assessment::where([
                 ['student_id', $student->id],
-                ['detailed_assessment_components_id', $scoreData['detailed_assessment_components_id']]
-            ])->exists()) {
-                continue; // Skip jika sudah ada
+                ['detailed_assessment_component_id', $scoreData['detailed_assessment_components_id']]
+            ])->first();
+
+            if ($existingAssessment) {
+                // Perbarui jika sudah ada
+                $existingAssessment->update([
+                    'score' => $scoreData['score'],
+                    'updated_at' => now(),
+                ]);
+            } else {
+                // Tambahkan jika belum ada
+                Assessment::create([
+                    'student_id' => $student->id,
+                    'detailed_assessment_component_id' => $scoreData['detailed_assessment_components_id'],
+                    'score' => $scoreData['score'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
-
-            $assessments[] = [
-                'student_id' => $student->id,
-                'detailed_assessment_components_id' => $scoreData['detailed_assessment_components_id'],
-                'score' => $scoreData['score'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ];
-        }
-
-        if (!empty($assessments)) {
-            // Batch insert sekaligus
-            Assessment::insert($assessments);
         }
 
         return response()->json([
