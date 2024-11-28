@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Validator;
 use App\Models\Student;
 use App\Models\Guidance;
+use App\Models\Assessment;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\AssessmentComponent;
 use App\Http\Controllers\Controller;
 
 class DetailStudentController extends Controller
@@ -25,6 +27,42 @@ class DetailStudentController extends Controller
             "class" => "{$student->studyProgram->study_program_initials} - {$student->class}",
             "is_finished" => $student->is_finished,
         ];
+        
+        // Ambil semua komponen penilaian beserta sub komponen
+        $components = AssessmentComponent::with('detailedComponents')->get();
+
+        // Ambil semua nilai yang sudah dimiliki siswa
+        $existingAssessments = Assessment::where('student_id', $student->id)
+            ->pluck('score', 'detailed_assessment_component_id');
+
+        // Map data komponen penilaian beserta sub komponen dan nilai
+        $scoresAssessments = $components->map(function ($component) use ($existingAssessments) {
+            // Mendapatkan nilai untuk setiap sub komponen
+            $scores = $component->detailedComponents->map(function ($detailedComponent) use ($existingAssessments) {
+                return [
+                    'id' => $detailedComponent->id,
+                    'name' => $detailedComponent->information,
+                    'score' => $existingAssessments->get($detailedComponent->id, null) // Nilai default null jika belum ada
+                ];
+            });
+
+            // Menghitung rata-rata nilai dari sub komponen
+            $averageScore = $scores->filter(function ($score) {
+                return $score['score'] !== null; // Mengabaikan nilai yang null
+            })->avg('score'); // Menghitung rata-rata dari nilai yang ada
+
+            $averageScore = round($averageScore, 2);
+
+            return [
+                'component_name' => $component->name,
+                'average_score' => $averageScore // Menambahkan rata-rata nilai
+            ];
+        });
+
+        $average_all_assessments = $scoresAssessments->filter(function ($score) {
+                return $score['average_score'] !== null; // Mengabaikan nilai yang null
+            })->avg('average_score');
+        $average_all_assessments = round($average_all_assessments, 2);
 
         $data = [
             "student" => $dataStudent,
@@ -37,7 +75,8 @@ class DetailStudentController extends Controller
                     "end_date" => $internship->end_date,
                 ];
             }),
-            "assessments" => $student->assessments,
+            "assessments" => $scoresAssessments,
+            "average_all_assessments" => $average_all_assessments,
             "guidances" => $student->guidances()->latest()->get(),
             "log_book" => $student->logBooks()->latest()->get(),
         ];
