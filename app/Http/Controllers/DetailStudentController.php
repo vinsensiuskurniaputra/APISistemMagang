@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Guidance;
 use App\Models\Assessment;
@@ -134,6 +135,37 @@ class DetailStudentController extends Controller
         }
 
         $guidance->update($data);
+
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => [
+                "message" => "Success"
+            ]
+        ],200);
+
+    }
+
+    public function addNoteLogBook(Request $request, LogBook $logBook)
+    {
+        $validator = Validator::make( $request->all(),[
+            'lecturer_note' => ['required'],
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                "code" => "400",
+                "status" => "BAD_REQUEST",
+                "errors" => $validator->errors()
+            ],400);
+        }
+
+        $data = [
+            'lecturer_note' => $request->lecturer_note,
+            'updated_at' => now(),
+        ];
+
+        $logBook->update($data);
 
         return response()->json([
             "code" => "200",

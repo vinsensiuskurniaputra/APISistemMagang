@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('activity');
             $table->date('date');
+            $table->longText('lecturer_note')->nullable();
             $table->timestamps();
         });
     }

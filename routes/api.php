@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->prefix('/lecturer')->group(function () {
     Route::get('/assessments/{student}', [AssessmentController::class, 'getStudentAssessments']);
     
     Route::put('/guidance/{guidance}', [DetailStudentController::class, 'update']);
+    Route::put('/logBook/{logBook}', [DetailStudentController::class, 'addNoteLogBook']);
     
     Route::post('/notification', [NotificationController::class, 'store']);
     Route::get('/profile', [ProfileLecturerController::class, 'index']);
@@ -65,7 +66,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/updateProfile', [UserController::class, 'update']);
 
-    Route::put('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
+    Route::put('/notification/markAsRead', [NotificationController::class, 'markAsRead']);
     
     Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 });
