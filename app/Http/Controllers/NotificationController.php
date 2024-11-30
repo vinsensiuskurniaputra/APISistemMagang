@@ -28,7 +28,7 @@ class NotificationController extends Controller
             'user_id' => ['required', 'exists:users,id'],
             'message' => ['required', 'string'],
             'date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'category' => ['required', 'string', 'in:info,warning,alert'],
+            'category' => ['required', 'string', 'in:guidance,general,log_book,revisi'],
             'detail_text' => ['nullable', 'string'],
         ]);
 
@@ -65,6 +65,13 @@ class NotificationController extends Controller
     public function markAsRead(Request $request)
     {
         $request->user()->notifications()->where('is_read', false)->update(['is_read' => true]);
+        return response()->json([
+            "code" => "200",
+            "status" => "OK",
+            "data" => [
+                "message" => "Notification mark as read successfully"
+            ]
+        ], 200);
     }
 
 
