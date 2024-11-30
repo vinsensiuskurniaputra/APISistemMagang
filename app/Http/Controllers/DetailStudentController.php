@@ -26,7 +26,7 @@ class DetailStudentController extends Controller
             "email" => $student->user->email,
             "major" => $student->studyProgram->major,
             "class" => "{$student->studyProgram->study_program_initials} - {$student->class}",
-            "is_finished" => $student->is_finished,
+            "is_finished" => $student->is_finished == 1,
         ];
         
         // Ambil semua komponen penilaian beserta sub komponen
