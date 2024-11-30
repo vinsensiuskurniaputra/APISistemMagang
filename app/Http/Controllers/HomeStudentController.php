@@ -13,6 +13,7 @@ class HomeStudentController extends Controller
         $data = [
             "name" => $request->user()->name,
             "seminar" => null,
+            "is_finished" => $request->user()->student->is_finished == 1,
             "notif_count" => $request->user()->notifications()->where('is_read', false)->count(),
             "latest_guidances" => $request->user()->student->guidances()->latest('updated_at')->take(2)->get()->map(function ($guidance) {
                 return [
