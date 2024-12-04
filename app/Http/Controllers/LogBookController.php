@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\LogBook;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -53,6 +54,18 @@ class LogBookController extends Controller
             "updated_at" => now(),
         ]);
 
+        $message = "Telah Membuat Log Book Baru";
+        $category = "log_book";
+        Notification::create([
+            "user_id" => $request->user()->lecturer->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
+
         return response()->json([
             "code" => "200",
             "status" => "OK",
@@ -94,6 +107,18 @@ class LogBookController extends Controller
             'date' => $request->date,
             'activity' => $request->activity,
             "updated_at" => now(),
+        ]);
+
+        $message = "Telah Mengedit Log Book" . $request->title;
+        $category = "log_book";
+        Notification::create([
+            "user_id" => $request->user()->lecturer->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
         ]);
 
         return response()->json([

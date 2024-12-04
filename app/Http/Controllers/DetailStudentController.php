@@ -7,6 +7,7 @@ use App\Models\LogBook;
 use App\Models\Student;
 use App\Models\Guidance;
 use App\Models\Assessment;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\AssessmentComponent;
@@ -136,6 +137,18 @@ class DetailStudentController extends Controller
 
         $guidance->update($data);
 
+        $message = "Telah meng" . $request->status . " Bimbingan Baru";
+        $category = "guidance";
+        Notification::create([
+            "user_id" => $request->user()->student->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $request->status == "rejected" ? "revisi" : $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
+
         return response()->json([
             "code" => "200",
             "status" => "OK",
@@ -166,6 +179,18 @@ class DetailStudentController extends Controller
         ];
 
         $logBook->update($data);
+
+        $message = "Telah menambahkan catatan pada log book anda";
+        $category = "log_book";
+        Notification::create([
+            "user_id" => $request->user()->student->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",
