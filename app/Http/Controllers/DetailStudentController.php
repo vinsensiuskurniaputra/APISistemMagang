@@ -222,11 +222,13 @@ class DetailStudentController extends Controller
 
         $student->update($data);
 
-        $message = "Selamat anda telah dinyatakan selesai magang, Silahkan hubungi ". $student->lecturer->user->name . " untuk meminta jadwal seminar anda !";
+        $message =  $request->is_finished == true ? "Selamat anda telah dinyatakan selesai magang" : "Status anda diedit blm selesai magang";
+        $detailText = "Silahkan hubungi ". $student->lecturer->user->name . " untuk meminta jadwal seminar anda !";
         $category = "General"; 
         Notification::create([
             "user_id" =>  $student->user->id,
             "message" => $message,
+            "detail_text" => $detailText,
             "date" => now(),
             "category" => $category,
             "is_read" => 0,
