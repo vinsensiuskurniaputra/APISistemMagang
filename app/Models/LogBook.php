@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LogBook extends Model
 {
@@ -12,4 +13,8 @@ class LogBook extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
 }

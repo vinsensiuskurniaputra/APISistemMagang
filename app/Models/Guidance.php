@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Guidance extends Model
 {
@@ -14,4 +15,8 @@ class Guidance extends Model
     ];
 
     public const STATUSES = ['approved', 'rejected', 'in-progress', 'updated'];
+
+    public function student() {
+        return $this->belongsTo(Student::class);
+    }
 }
