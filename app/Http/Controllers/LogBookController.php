@@ -16,7 +16,15 @@ class LogBookController extends Controller
     public function index(Request $request)
     {
         $data = [
-            "log_books" => $request->user()->student->logBooks()->latest('updated_at')->get()
+            "log_books" => $request->user()->student->logBooks()->latest('updated_at')->get()->map(function ($logBook) {
+                return [
+                    'id' => $logBook->id,
+                    'title' => $logBook->title,
+                    'activity' => $logBook->activity,
+                    'date' => $logBook->date,
+                    'lecturer_note' => $logBook->lecturer_note,
+                ];
+            })
         ];
 
         return response()->json([
