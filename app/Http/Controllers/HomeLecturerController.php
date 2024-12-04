@@ -23,6 +23,7 @@ class HomeLecturerController extends Controller
                     "study_program" => $student->studyProgram->name,
                     "major" => $student->studyProgram->major,
                     "academic_year" => $student->academic_year,
+                    "is_finished" => $student->is_finished == 1,
                     "activities" => [
                         "is_in_progress" => $student->guidances->contains('status', 'in-progress'),
                         "is_updated" => $student->guidances->contains('status', 'updated'),
