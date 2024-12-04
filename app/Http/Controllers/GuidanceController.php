@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Validator;
 use App\Models\Guidance;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,6 +26,8 @@ class GuidanceController extends Controller
                 'name_file' => $guidance->name_file != null ? asset('storage/' . $guidance->name_file) : null,
             ];
         });
+
+
 
 
         return response()->json([
@@ -69,6 +72,18 @@ class GuidanceController extends Controller
         }
 
         Guidance::create($data);
+
+        $message = "Telah Menambahkan Bimbingan Baru";
+        $category = "guidance";
+        Notification::create([
+            "user_id" => $request->user()->lecturer->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",
@@ -123,6 +138,18 @@ class GuidanceController extends Controller
         }
 
         $guidance->update($data);
+
+        $message = "Telah Mengedit Bimbingan Baru";
+        $category = "guidance";
+        Notification::create([
+            "user_id" => $request->user()->lecturer->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",
