@@ -11,6 +11,7 @@ class HomeLecturerController extends Controller
     public function index(Request $request)
     {
         $data = [
+            "userId" => $request->user()->id,
             "name" => $request->user()->name,
             "students" => $request->user()->lecturer->students->map(function($student){
                 return [
