@@ -137,10 +137,10 @@ class DetailStudentController extends Controller
 
         $guidance->update($data);
 
-        $message = "Telah meng" . $request->status . " Bimbingan Baru";
+        $message = "Telah meng" . $request->status . " Bimbingan Anda";
         $category = "guidance";
         Notification::create([
-            "user_id" => $request->user()->student->user->id,
+            "user_id" => $guidance->student->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $request->status == "rejected" ? "revisi" : $category,
@@ -183,7 +183,7 @@ class DetailStudentController extends Controller
         $message = "Telah menambahkan catatan pada log book anda";
         $category = "log_book";
         Notification::create([
-            "user_id" => $request->user()->student->user->id,
+            "user_id" =>  $logBook->student->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
@@ -221,6 +221,19 @@ class DetailStudentController extends Controller
         ];
 
         $student->update($data);
+
+        $message = "Selamat anda telah dinyatakan selesai magang";
+        $detailText = "Silahkan hubungi ". $student->lecturer->user->name . " untuk meminta jadwal seminar anda !";
+        $category = "General"; 
+        Notification::create([
+            "user_id" =>  $student->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",

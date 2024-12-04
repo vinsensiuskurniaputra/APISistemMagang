@@ -76,7 +76,7 @@ class GuidanceController extends Controller
         $message = "Telah Menambahkan Bimbingan Baru";
         $category = "guidance";
         Notification::create([
-            "user_id" => $request->user()->lecturer->id,
+            "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
@@ -142,7 +142,7 @@ class GuidanceController extends Controller
         $message = "Telah Mengedit Bimbingan Baru";
         $category = "guidance";
         Notification::create([
-            "user_id" => $request->user()->lecturer->id,
+            "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
@@ -170,6 +170,18 @@ class GuidanceController extends Controller
         }
 
         $guidance->delete();
+
+        $message = "Telah Menghapus Bimbingan";
+        $category = "guidance";
+        Notification::create([
+            "user_id" => $request->user()->student->lecturer->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",

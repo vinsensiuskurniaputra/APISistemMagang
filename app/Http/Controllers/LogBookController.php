@@ -65,7 +65,7 @@ class LogBookController extends Controller
         $message = "Telah Membuat Log Book Baru";
         $category = "log_book";
         Notification::create([
-            "user_id" => $request->user()->lecturer->user->id,
+            "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
