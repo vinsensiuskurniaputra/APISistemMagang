@@ -25,7 +25,8 @@ class NotificationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'array'], // Mengharuskan user_id sebagai array
+            'user_id.*' => ['required', 'exists:users,id'], // Validasi tiap elemen array agar ada di tabel users
             'message' => ['required', 'string'],
             'date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'category' => ['required', 'string', 'in:guidance,general,log_book,revisi'],
@@ -40,27 +41,36 @@ class NotificationController extends Controller
             ], 400);
         }
 
-        $data = [
-            "user_id" => $request->user_id,
-            "message" => $request->message,
-            "date" => $request->date,
-            "category" => $request->category,
-            "is_read" => false,
-            "detail_text" => $request->detail_text ?? null,
-            "created_at" => now(),
-            "updated_at" => now(),
-        ];
+        // Loop untuk membuat notifikasi ke setiap user_id
+        $userIds = $request->user_id;
+        $notifications = [];
 
-        Notification::create($data);
+        foreach ($userIds as $userId) {
+            $data = [
+                "user_id" => $userId,
+                "message" => $request->message,
+                "date" => $request->date,
+                "category" => $request->category,
+                "is_read" => false,
+                "detail_text" => $request->detail_text ?? null,
+                "created_at" => now(),
+                "updated_at" => now(),
+            ];
+
+            // Simpan data notifikasi
+            $notifications[] = Notification::create($data);
+        }
 
         return response()->json([
             "code" => "200",
             "status" => "OK",
             "data" => [
-                "message" => "Notification created successfully"
+                "message" => "Notifications created successfully",
+                "notifications" => $notifications
             ]
         ], 200);
     }
+
 
     public function markAsRead(Request $request)
     {
