@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('internships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id');
-            $table->foreignId('industry_id');
+            $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
+            $table->foreignId('industry_id')->constrained('industries')->cascadeOnDelete();
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->timestamps();
