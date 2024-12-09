@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('lecturer_id');
-            $table->foreignId('study_program_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('lecturer_id')->constrained('lecturers')->cascadeOnDelete();
+            $table->foreignId('study_program_id')->constrained()->cascadeOnDelete();
             $table->string('class');
             $table->string('academic_year');
             $table->boolean('is_finished');

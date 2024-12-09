@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('log_books', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id');
+            $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
             $table->string('title');
             $table->longText('activity');
             $table->date('date');
