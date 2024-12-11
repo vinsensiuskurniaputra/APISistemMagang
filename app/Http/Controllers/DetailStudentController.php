@@ -66,6 +66,18 @@ class DetailStudentController extends Controller
             })->avg('average_score');
         $average_all_assessments = round($average_all_assessments, 2);
 
+        $guidances = $student->guidances()->latest('updated_at')->get()->map(function ($guidance) {
+            return [
+                'id' => $guidance->id,
+                'title' => $guidance->title,
+                'activity' => $guidance->activity,
+                'date' => $guidance->date,
+                'lecturer_note' => $guidance->lecturer_note,
+                'status' => $guidance->status,
+                'name_file' => $guidance->name_file != null ? asset('storage/' . $guidance->name_file) : null,
+            ];
+        });
+
         $data = [
             "student" => $dataStudent,
             "internships" => $student->internships->map(function($internship){
@@ -79,7 +91,7 @@ class DetailStudentController extends Controller
             }),
             "assessments" => $scoresAssessments,
             "average_all_assessments" => $average_all_assessments,
-            "guidances" => $student->guidances()->latest()->get(),
+            "guidances" => $guidances,
             "log_book" => $student->logBooks()->latest()->get(),
         ];
 
