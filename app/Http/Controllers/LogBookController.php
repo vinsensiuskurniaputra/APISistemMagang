@@ -84,14 +84,6 @@ class LogBookController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(LogBook $logBook)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, LogBook $logBook)
@@ -110,17 +102,19 @@ class LogBookController extends Controller
             ],400);
         }
 
-        $logBook->update([
+        $data = [
             'title' => $request->title,
             'date' => $request->date,
             'activity' => $request->activity,
             "updated_at" => now(),
-        ]);
+        ];
 
-        $message = "Telah Mengedit Log Book" . $request->title;
+        $logBook->update($data);
+
+        $message = "Telah Mengedit Log Book " . $request->title;
         $category = "log_book";
         Notification::create([
-            "user_id" => $request->user()->lecturer->user->id,
+            "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
@@ -144,6 +138,18 @@ class LogBookController extends Controller
     public function destroy(LogBook $logBook)
     {
         $logBook->delete();
+
+        $message = "Telah Menghapus Log Book";
+        $category = "log_book";
+        Notification::create([
+            "user_id" => $request->user()->student->lecturer->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "create_at" => now(),
+            "update_at" => now(),
+        ]);
 
         return response()->json([
             "code" => "200",
