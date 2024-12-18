@@ -51,5 +51,13 @@ class Student extends Model
         return $this->hasMany(Assessment::class);
     }
 
-    
+    public function archives()
+    {
+        return $this->hasMany(Archive::class);
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_student');
+    }
 }

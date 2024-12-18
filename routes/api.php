@@ -47,6 +47,13 @@ Route::middleware(['auth:sanctum'])->prefix('/lecturer')->group(function () {
     Route::get('/home', [HomeLecturerController::class, 'index']);
     
     Route::get('/detailStudent/{student}', [DetailStudentController::class, 'index']);
+    
+    Route::post('/archive/students', [HomeLecturerController::class, 'archiveStudents']);
+    Route::post('/unarchive/students', [HomeLecturerController::class, 'unarchiveStudents']);
+    
+    Route::post('/groups', [HomeLecturerController::class, 'createGroup']);
+    Route::put('/groups/{groupId}', [HomeLecturerController::class, 'updateGroup']);
+    Route::delete('/groups/{groupId}', [HomeLecturerController::class, 'deleteGroup']);
 
     Route::put('/finishedStudent/{student}', [DetailStudentController::class, 'updateFinishedStudent']);
 
