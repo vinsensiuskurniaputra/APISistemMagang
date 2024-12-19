@@ -135,28 +135,39 @@ class LogBookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LogBook $logBook)
-    {
+    public function destroy(Request $request, LogBook $logBook)
+{
+    try {
         $logBook->delete();
 
         $message = "Telah Menghapus Log Book";
         $category = "log_book";
+
         Notification::create([
             "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
             "is_read" => 0,
-            "create_at" => now(),
-            "update_at" => now(),
+            "created_at" => now(),
+            "updated_at" => now(),
         ]);
 
         return response()->json([
-            "code" => "200",
+            "code" => 200,
             "status" => "OK",
             "data" => [
                 "message" => "Success"
             ]
-        ],200);
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            "code" => 500,
+            "status" => "Error",
+            "data" => [
+                "message" => "Failed to delete log book"
+            ]
+        ], 500);
     }
+}
 }

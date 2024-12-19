@@ -163,32 +163,43 @@ class GuidanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Guidance $guidance)
+    public function destroy(Request $request, Guidance $guidance)
     {
-        if ($guidance->name_file) {
-            Storage::disk('public')->delete($guidance->name_file);
+        try {
+            if ($guidance->name_file) {
+                Storage::disk('public')->delete($guidance->name_file);
+            }
+
+            $guidance->delete();
+
+            $message = "Telah Menghapus Bimbingan";
+            $category = "guidance";
+            
+            Notification::create([
+                "user_id" => $request->user()->student->lecturer->user->id,
+                "message" => $message,
+                "date" => now(),
+                "category" => $category,
+                "is_read" => 0,
+                "created_at" => now(),
+                "updated_at" => now(),
+            ]);
+
+            return response()->json([
+                "code" => 200,
+                "status" => "OK",
+                "data" => [
+                    "message" => "Success"
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "code" => 500,
+                "status" => "Error",
+                "data" => [
+                    "message" => "Failed to delete guidance"
+                ]
+            ], 500);
         }
-
-        $guidance->delete();
-
-        $message = "Telah Menghapus Bimbingan";
-        $category = "guidance";
-        Notification::create([
-            "user_id" => $request->user()->student->lecturer->user->id,
-            "message" => $message,
-            "date" => now(),
-            "category" => $category,
-            "is_read" => 0,
-            "create_at" => now(),
-            "update_at" => now(),
-        ]);
-
-        return response()->json([
-            "code" => "200",
-            "status" => "OK",
-            "data" => [
-                "message" => "Success"
-            ]
-        ],200);
     }
 }
