@@ -4,16 +4,44 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\LogBook;
+use Carbon\Carbon;
 
 class HomeLecturerController extends Controller
 {
-
     public function index(Request $request)
     {
         $data = [
             "userId" => $request->user()->id,
             "name" => $request->user()->name,
             "students" => $request->user()->lecturer->students->map(function($student){
+                // Cek logbook terbaru
+                $latestLogbook = $student->logBooks()
+                    ->latest('updated_at')
+                    ->first();
+                
+                // Cek guidance terbaru    
+                $latestGuidance = $student->guidances()
+                    ->latest('updated_at')
+                    ->first();
+                
+                // Bandingkan untuk mendapatkan last updated
+                $lastUpdated = null;
+                if ($latestLogbook && $latestGuidance) {
+                    $lastUpdated = $latestLogbook->updated_at->gt($latestGuidance->updated_at) 
+                        ? $latestLogbook->updated_at 
+                        : $latestGuidance->updated_at;
+                } elseif ($latestLogbook) {
+                    $lastUpdated = $latestLogbook->updated_at;
+                } elseif ($latestGuidance) {
+                    $lastUpdated = $latestGuidance->updated_at;
+                }
+
+                // Cek logbook baru dalam 24 jam terakhir
+                $hasNewLogbook = $student->logBooks()
+                    ->where('created_at', '>=', Carbon::now()->subHours(24))
+                    ->exists();
+
                 return [
                     "id" => $student->id,
                     "name" => $student->user->name,
@@ -29,6 +57,8 @@ class HomeLecturerController extends Controller
                         "is_updated" => $student->guidances->contains('status', 'updated'),
                         "is_rejected" => $student->guidances->contains('status', 'rejected'),
                     ],
+                    "hasNewLogbook" => $hasNewLogbook,
+                    "lastUpdated" => $lastUpdated ? $lastUpdated->toISOString() : null,
                 ];
             }),
         ];
