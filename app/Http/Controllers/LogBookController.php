@@ -84,14 +84,6 @@ class LogBookController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(LogBook $logBook)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, LogBook $logBook)
@@ -110,17 +102,19 @@ class LogBookController extends Controller
             ],400);
         }
 
-        $logBook->update([
+        $data = [
             'title' => $request->title,
             'date' => $request->date,
             'activity' => $request->activity,
             "updated_at" => now(),
-        ]);
+        ];
 
-        $message = "Telah Mengedit Log Book" . $request->title;
+        $logBook->update($data);
+
+        $message = "Telah Mengedit Log Book " . $request->title;
         $category = "log_book";
         Notification::create([
-            "user_id" => $request->user()->lecturer->user->id,
+            "user_id" => $request->user()->student->lecturer->user->id,
             "message" => $message,
             "date" => now(),
             "category" => $category,
@@ -141,16 +135,39 @@ class LogBookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LogBook $logBook)
-    {
+    public function destroy(Request $request, LogBook $logBook)
+{
+    try {
         $logBook->delete();
 
+        $message = "Telah Menghapus Log Book";
+        $category = "log_book";
+
+        Notification::create([
+            "user_id" => $request->user()->student->lecturer->user->id,
+            "message" => $message,
+            "date" => now(),
+            "category" => $category,
+            "is_read" => 0,
+            "created_at" => now(),
+            "updated_at" => now(),
+        ]);
+
         return response()->json([
-            "code" => "200",
+            "code" => 200,
             "status" => "OK",
             "data" => [
                 "message" => "Success"
             ]
-        ],200);
+        ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            "code" => 500,
+            "status" => "Error",
+            "data" => [
+                "message" => "Failed to delete log book"
+            ]
+        ], 500);
     }
+}
 }

@@ -22,4 +22,14 @@ class Lecturer extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function archives()
+    {
+        return $this->hasMany(Archive::class);
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
 }
