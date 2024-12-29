@@ -16,6 +16,7 @@ class HomeLecturerController extends Controller
             "students" => $request->user()->lecturer->students->map(function($student){
                 return [
                     "id" => $student->id,
+                    "user_id" => $student->user->id,
                     "name" => $student->user->name,
                     "username" => $student->user->username,
                     "photo_profile" => $student->user->photo_profile ? asset('storage/'.$student->user->photo_profile ) : null,

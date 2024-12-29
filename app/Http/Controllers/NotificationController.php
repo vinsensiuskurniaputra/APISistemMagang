@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use Carbon\Carbon;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,17 @@ class NotificationController extends Controller
             'user_id' => ['required', 'array'], // Mengharuskan user_id sebagai array
             'user_id.*' => ['required', 'exists:users,id'], // Validasi tiap elemen array agar ada di tabel users
             'message' => ['required', 'string'],
-            'date' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
+            'date' => [
+                'required',
+                'date',
+                'date_format:Y-m-d',
+                function ($attribute, $value, $fail) {
+                    $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+                    if ($value > $today) {
+                        $fail("The $attribute field must be a date before or equal to today.");
+                    }
+                },
+            ],
             'category' => ['required', 'string', 'in:guidance,general,log_book,revisi'],
             'detail_text' => ['nullable', 'string'],
         ]);
