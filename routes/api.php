@@ -28,6 +28,8 @@ use App\Http\Controllers\ProfileLecturerController;
 
 Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
 
+Route::post('/loginGoogle', [AuthController::class, 'authenticateWithFirebase']);
+
 Route::middleware(['auth:sanctum'])->prefix('/student')->group(function () {
     Route::get('/home', [HomeStudentController::class, 'index']);
     Route::get('/notification', [NotificationController::class, 'index']);
