@@ -154,6 +154,7 @@ class DetailStudentController extends Controller
         Notification::create([
             "user_id" => $guidance->student->user->id,
             "message" => $message,
+            "detail_text" => $request->lecturer_note,
             "date" => now(),
             "category" => $request->status == "rejected" ? "revisi" : $category,
             "is_read" => 0,
