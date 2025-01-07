@@ -11,6 +11,16 @@ class HomeLecturerController extends Controller
 {
     public function index(Request $request)
     {
+        $groups = $request->user()->lecturer->groups->map(function ($group) {
+            return [
+                'id' => $group->id,
+                'title' => $group->title,
+                'icon' => $group->icon,
+                'color' => $group->color,
+                'student_count' => $group->groupStudents->count()
+            ];
+        });
+
         $data = [
             "userId" => $request->user()->id,
             "name" => $request->user()->name,
@@ -62,6 +72,7 @@ class HomeLecturerController extends Controller
                     "lastUpdated" => $lastUpdated ? $lastUpdated->toISOString() : null,
                 ];
             }),
+            "groups" => $groups,
         ];
 
         return response()->json([

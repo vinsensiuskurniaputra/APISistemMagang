@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LogBookController;
 use App\Http\Controllers\GuidanceController;
 use App\Http\Controllers\AssessmentController;
@@ -53,7 +54,7 @@ Route::middleware(['auth:sanctum'])->prefix('/lecturer')->group(function () {
     Route::post('/archive/students', [HomeLecturerController::class, 'archiveStudents']);
     Route::post('/unarchive/students', [HomeLecturerController::class, 'unarchiveStudents']);
     
-    Route::post('/groups', [HomeLecturerController::class, 'createGroup']);
+    Route::post('/groups', [GroupController::class, 'store']);
     Route::put('/groups/{groupId}', [HomeLecturerController::class, 'updateGroup']);
     Route::delete('/groups/{groupId}', [HomeLecturerController::class, 'deleteGroup']);
 
