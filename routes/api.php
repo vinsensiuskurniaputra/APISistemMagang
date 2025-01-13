@@ -27,7 +27,7 @@ use App\Http\Controllers\ProfileLecturerController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'authenticate'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::post('/loginGoogle', [AuthController::class, 'authenticateWithFirebase']);
 

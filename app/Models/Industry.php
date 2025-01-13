@@ -12,4 +12,9 @@ class Industry extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function internships()
+    {
+        return $this->hasMany(Internship::class);
+    }
 }

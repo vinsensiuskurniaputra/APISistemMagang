@@ -19,6 +19,8 @@ class User extends Authenticatable
         "Student" => "Student"
     ];
 
+    public const DEFAULT_PROFILE_IMAGE = '/images/default-avatar.png';
+
     protected $guarded = [
         'id',
     ];
@@ -33,5 +35,11 @@ class User extends Authenticatable
 
     public function notifications(){
         return $this->hasMany(Notification::class);
+    }
+
+    // Add accessor for profile image
+    public function getProfileImageAttribute()
+    {
+        return $this->photo_profile ? asset('storage/' . $this->photo_profile) : asset(self::DEFAULT_PROFILE_IMAGE);
     }
 }
